@@ -24,7 +24,6 @@ int main() {
     for(size_t i = 0; i < n; ++i) scanf("%u", &in[i]);
     for(size_t i = 0; i < n; ++i) inMap[in[i]] = i;
     rootIdx = buildTree(0, 0, n);
-    // printf("--------------\n");
     for(q.push(rootIdx); !q.empty(); q.pop()) {
         const size_t idx = q.front();
         printf("%u", in[idx]);
@@ -32,7 +31,6 @@ int main() {
         if(tree[idx].second != -1) q.push(tree[idx].second);
         printf("%c", q.size() == 1 ? '\n' : ' ');
     }
-    // printf("--------------\n");
     return 0;
 }
 
