@@ -45,7 +45,7 @@ int main() {
         else get<3>(t) = rank;
     }
     printf("%zu\n", testees.size());
-    for(const Testee t : testees) {
+    for(const Testee &t : testees) {
         printf("%013llu %u %u %u\n", get<0>(t), get<3>(t), get<2>(t), get<4>(t));
     }
     return 0;
