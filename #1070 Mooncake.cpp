@@ -6,7 +6,7 @@ typedef pair<double, double> Stock;  // weight, unitPrice
 
 int main() {
     size_t n;
-    double demandWeight, sold;
+    double demandWeight;
     if(scanf("%zu%lf", &n, &demandWeight) != 2) return 0;
     vector<Stock> stocks(n);
     for(Stock &stock : stocks) if(!scanf("%lf", &stock.first)) return 0;
@@ -15,7 +15,7 @@ int main() {
     sort(stocks.begin(), stocks.end(), [](const Stock &a, const Stock &b) {
         return a.second > b.second;
     });
-    double ans = 0;
+    double ans = 0, sold;
     for(const Stock &stock : stocks) {
         if(demandWeight == 0) break;
         demandWeight -= (sold = min(demandWeight, stock.first));
