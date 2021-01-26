@@ -18,17 +18,19 @@ int main() {
         records.emplace_back(plate, h * 3600 + m * 60 + s, in == "in");
     }
     
-    sort(records.begin(), records.end(), less<Record>());
+    sort(records.begin(), records.end());
     vector<noPlateRecord> valid;
     unordered_map<string, unsigned> parktime;
+    pair<unsigned, vector<string>> maxParkTime;
     for(auto it = records.begin(); it != records.end() - 1; ++it) {
         if(!get<2>(*it) || get<2>(*it) == get<2>(*(it+1)) || get<0>(*it) != get<0>(*(it+1))) continue;
         valid.emplace_back(get<1>(*it), get<2>(*it));
         valid.emplace_back(get<1>(*(it+1)), get<2>(*(it+1)));
-        parktime[get<0>(*it)] += get<1>(*(it+1)) - get<1>(*it);
+        unsigned temp = (parktime[get<0>(*it)] += get<1>(*(it+1)) - get<1>(*it));
+        if(temp > maxParkTime.first) maxParkTime.first = temp;
     }
     
-    sort(valid.begin(), valid.end(), [](const noPlateRecord &a, const noPlateRecord &b){ return a.first < b.first; });
+    sort(valid.begin(), valid.end());
     for(size_t i = 0, j = 0, cnt = 0; i < k && scanf("%u:%u:%u", &h, &m, &s); ++i) {
         for(unsigned ts = h * 3600 + m * 60 + s; j < valid.size() && valid[j].first <= ts; ++j) {
             cnt += (valid[j].second ? 1 : -1);
@@ -36,14 +38,8 @@ int main() {
         printf("%zu\n", cnt);
     }
 
-    pair<unsigned, vector<string>> maxParkTime;
     for(const auto &kv : parktime) {
-        if(kv.second > maxParkTime.first) {
-            maxParkTime.first = kv.second;
-            maxParkTime.second.clear();
-            maxParkTime.second.emplace_back(kv.first);
-        }
-        else if(kv.second == maxParkTime.first) maxParkTime.second.emplace_back(kv.first);
+        if(kv.second == maxParkTime.first) maxParkTime.second.emplace_back(kv.first);
     }
 
     sort(maxParkTime.second.begin(), maxParkTime.second.end());
